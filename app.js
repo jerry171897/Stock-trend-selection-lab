@@ -10,10 +10,22 @@
   }
 
   const rows = bundle.recommendations;
+  const generatedAt = bundle.generated_at_local
+    ? new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(new Date(bundle.generated_at_local))
+    : "—";
   document.querySelectorAll("[data-as-of]").forEach(el => el.textContent = bundle.as_of_date || "—");
   document.querySelectorAll("[data-count]").forEach(el => el.textContent = rows.length);
   document.querySelectorAll("[data-status]").forEach(el => el.textContent = "更新完成");
-  document.querySelectorAll("[data-generated]").forEach(el => el.textContent = bundle.generated_at_local || "—");
+  document.querySelectorAll("[data-generated]").forEach(el => el.textContent = generatedAt);
   message.textContent = `共 ${rows.length} 檔合格；最多顯示 10 檔，不足不補。點選可查看理由與價格資訊。`;
 
   const template = document.querySelector("#stock-template");
