@@ -27,6 +27,9 @@
   document.querySelectorAll("[data-status]").forEach(el => el.textContent = "更新完成");
   document.querySelectorAll("[data-generated]").forEach(el => el.textContent = generatedAt);
   message.textContent = `共 ${rows.length} 檔合格；最多顯示 10 檔，不足不補。點選可查看理由與價格資訊。`;
+  if (rows.length === 0) {
+    message.textContent = "今日沒有符合發布條件的股票。";
+  }
 
   const template = document.querySelector("#stock-template");
   const number = value => value !== null && value !== "" && Number.isFinite(Number(value))
