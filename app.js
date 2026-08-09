@@ -408,7 +408,10 @@
     grid.appendChild(card);
   });
 
-  const trackingRows = Array.isArray(bundle.tracking) ? bundle.tracking : [];
+  const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered"]);
+  const trackingRows = Array.isArray(bundle.tracking)
+    ? bundle.tracking.filter(row => visibleTrackingStatuses.has(row.status))
+    : [];
   const trackingBody = document.querySelector("#tracking-body");
   const trackingSearch = document.querySelector("#tracking-search");
   const trackingLifecycle = document.querySelector("#tracking-lifecycle");
@@ -419,26 +422,16 @@
   const trackingRange = document.querySelector("#tracking-range");
   const trackingPage = document.querySelector("#tracking-page");
   const trackingLabels = [
-    "股票", "原始推薦", "最新價格", "原始目標",
-    "最新參考目標", "最新停損參考", "追蹤日數", "目前狀態"
+    "股票", "原始推薦", "最新價格", "原始停利",
+    "原始停損", "追蹤日數", "目前狀態"
   ];
   const trackingPageSize = 10;
   let currentTrackingPage = 1;
   const statusLabels = {
     active: "持續追蹤",
-    target_raised: "目標上調",
-    target_lowered: "目標下調",
     target_reached: "已達原始目標",
-    stop_triggered: "已跌破原始停損",
-    trend_invalid: "趨勢失效結案",
-    expired: "追蹤期滿結案"
+    stop_triggered: "已跌破原始停損"
   };
-  const targetChangePct = track => {
-    const original = Number(track.original_target);
-    const current = Number(track.current_target);
-    return original && Number.isFinite(current) ? (current / original - 1) * 100 : null;
-  };
-
   function filteredTrackingRows() {
     const keyword = trackingSearch.value.trim().toLowerCase();
     const lifecycle = trackingLifecycle.value;
@@ -456,9 +449,6 @@
       if (trackingSort.value === "days_desc") {
         return Number(b.trading_days || 0) - Number(a.trading_days || 0);
       }
-      if (trackingSort.value === "target_change_desc") {
-        return (targetChangePct(b) ?? -Infinity) - (targetChangePct(a) ?? -Infinity);
-      }
       return String(b.opened_date || "").localeCompare(String(a.opened_date || ""))
         || Number(b.track_id || 0) - Number(a.track_id || 0);
     });
@@ -473,15 +463,13 @@
     trackingBody.replaceChildren();
     pageRows.forEach(track => {
       const row = document.createElement("tr");
-      const targetChange = targetChangePct(track);
       const values = [
         `${track.stock_name || track.stock_id} ${track.stock_id}`,
         `${track.opened_date || "—"}／${number(track.opened_price)}`,
         number(track.latest_price),
         number(track.original_target),
-        `${number(track.current_target)}${Number.isFinite(targetChange) ? ` (${targetChange >= 0 ? "+" : ""}${targetChange.toFixed(1)}%)` : ""}`,
-        number(track.current_stop),
-        `${track.trading_days || 0}／60`,
+        number(track.original_stop),
+        `${track.trading_days || 0}`,
         statusLabels[track.status] || track.status || "—"
       ];
       values.forEach((value, index) => {
@@ -530,8 +518,6 @@
   const closedTracking = trackingRows.filter(row => Boolean(row.closed_date));
   const targetReached = closedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
-  const trendInvalid = closedTracking.filter(row => row.status === "trend_invalid");
-  const expiredTracking = closedTracking.filter(row => row.status === "expired");
   const trackingRate = count => closedTracking.length
     ? `${(count / closedTracking.length * 100).toFixed(1)}%`
     : "—";
@@ -547,8 +533,6 @@
   setTrackingStat("target-count", `${targetReached.length} 輪`);
   setTrackingStat("stop-rate", trackingRate(stopTriggered.length));
   setTrackingStat("stop-count", `${stopTriggered.length} 輪`);
-  setTrackingStat("invalid", trendInvalid.length);
-  setTrackingStat("expired", expiredTracking.length);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));
   const activeTracking = trackingRows.filter(row => !row.closed_date).length;
