@@ -408,7 +408,7 @@
     grid.appendChild(card);
   });
 
-  const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered"]);
+  const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered", "model_expired"]);
   const trackingRows = Array.isArray(bundle.tracking)
     ? bundle.tracking.filter(row => visibleTrackingStatuses.has(row.status))
     : [];
@@ -431,7 +431,8 @@
   const statusLabels = {
     active: "持續追蹤",
     target_reached: "已達原始目標",
-    stop_triggered: "已跌破原始停損"
+    stop_triggered: "已跌破原始停損",
+    model_expired: "模型預測失效"
   };
   function filteredTrackingRows() {
     const keyword = trackingSearch.value.trim().toLowerCase();
@@ -520,6 +521,7 @@
   const closedTracking = trackingRows.filter(row => Boolean(row.closed_date));
   const targetReached = closedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
+  const modelExpired = closedTracking.filter(row => row.status === "model_expired");
   const trackingRate = count => closedTracking.length
     ? `${(count / closedTracking.length * 100).toFixed(1)}%`
     : "—";
@@ -535,6 +537,8 @@
   setTrackingStat("target-count", `${targetReached.length} 輪`);
   setTrackingStat("stop-rate", trackingRate(stopTriggered.length));
   setTrackingStat("stop-count", `${stopTriggered.length} 輪`);
+  setTrackingStat("expired-rate", trackingRate(modelExpired.length));
+  setTrackingStat("expired-count", `${modelExpired.length} 輪`);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));
   const activeTracking = trackingRows.filter(row => !row.closed_date).length;
