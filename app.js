@@ -422,7 +422,7 @@
   const trackingRange = document.querySelector("#tracking-range");
   const trackingPage = document.querySelector("#tracking-page");
   const trackingLabels = [
-    "股票", "原始推薦", "最新價格", "原始停利",
+    "股票", "原始推薦", "追蹤價格", "原始停利",
     "原始停損", "追蹤日數", "目前狀態"
   ];
   trackingLabels.splice(5, 0, "結案日期／價格");
