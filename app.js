@@ -408,7 +408,7 @@
     grid.appendChild(card);
   });
 
-  const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered", "model_expired"]);
+  const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered", "model_expired", "policy_disqualified"]);
   const trackingRows = Array.isArray(bundle.tracking)
     ? bundle.tracking.filter(row => visibleTrackingStatuses.has(row.status))
     : [];
@@ -432,7 +432,8 @@
     active: "持續追蹤",
     target_reached: "已達原始目標",
     stop_triggered: "已跌破原始停損",
-    model_expired: "模型預測失效"
+    model_expired: "模型預測失效",
+    policy_disqualified: "不符合新規格"
   };
   function filteredTrackingRows() {
     const keyword = trackingSearch.value.trim().toLowerCase();
@@ -522,7 +523,14 @@
   const targetReached = closedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
   const modelExpired = closedTracking.filter(row => row.status === "model_expired");
-  const trackingRate = count => closedTracking.length
+  const policyDisqualified = closedTracking.filter(row => row.status === "policy_disqualified");
+  const outcomeTracking = closedTracking.filter(row =>
+    row.status === "target_reached" || row.status === "stop_triggered"
+  );
+  const trackingRate = count => outcomeTracking.length
+    ? `${(count / outcomeTracking.length * 100).toFixed(1)}%`
+    : "—";
+  const closedRate = count => closedTracking.length
     ? `${(count / closedTracking.length * 100).toFixed(1)}%`
     : "—";
   const setTrackingStat = (name, value) => {
@@ -537,8 +545,9 @@
   setTrackingStat("target-count", `${targetReached.length} 輪`);
   setTrackingStat("stop-rate", trackingRate(stopTriggered.length));
   setTrackingStat("stop-count", `${stopTriggered.length} 輪`);
-  setTrackingStat("expired-rate", trackingRate(modelExpired.length));
+  setTrackingStat("expired-rate", closedRate(modelExpired.length));
   setTrackingStat("expired-count", `${modelExpired.length} 輪`);
+  setTrackingStat("disqualified-count", `${policyDisqualified.length} 輪`);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));
   const activeTracking = trackingRows.filter(row => !row.closed_date).length;

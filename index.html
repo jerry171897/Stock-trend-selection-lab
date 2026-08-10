@@ -112,6 +112,7 @@
             <option value="target_reached">已達原始目標</option>
             <option value="stop_triggered">已跌破原始停損</option>
             <option value="model_expired">模型預測失效</option>
+            <option value="policy_disqualified">不符合新規格</option>
           </select>
         </label>
         <label>
@@ -145,13 +146,14 @@
             <p class="eyebrow">TARGET / STOP OUTCOMES</p>
             <h3 id="tracking-statistics-title">原始停利與停損追蹤統計</h3>
           </div>
-          <p>達標率與停損率以已結束輪次為分母；追蹤中的輪次不計入。</p>
+          <p>達標率與停損率只計入停利／停損結案；政策調整與模型失效另列。</p>
         </div>
         <div class="tracking-stat-grid">
           <article class="tracking-stat-card neutral"><span>已結束樣本</span><strong data-tracking-stat="closed">0</strong><small>輪次</small></article>
           <article class="tracking-stat-card success"><span>達到原始目標</span><strong data-tracking-stat="target-rate">—</strong><small data-tracking-stat="target-count">0 輪</small></article>
           <article class="tracking-stat-card danger"><span>觸及原始停損</span><strong data-tracking-stat="stop-rate">—</strong><small data-tracking-stat="stop-count">0 輪</small></article>
           <article class="tracking-stat-card warning"><span>模型預測失效</span><strong data-tracking-stat="expired-rate">—</strong><small data-tracking-stat="expired-count">0 輪</small></article>
+          <article class="tracking-stat-card neutral"><span>不符合新規格</span><strong data-tracking-stat="disqualified-count">0 輪</strong><small>不列入停利／停損率</small></article>
           <article class="tracking-stat-card active"><span>持續追蹤</span><strong data-tracking-stat="active">0</strong><small>輪次</small></article>
           <article class="tracking-stat-card success"><span>平均達標時間</span><strong data-tracking-stat="average-days">—</strong><small>交易日</small></article>
         </div>
