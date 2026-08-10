@@ -222,7 +222,7 @@
     recommendationScript.src = `recommendations-data.js?v=${Date.now()}`;
     recommendationScript.onload = () => {
       const appScript = document.createElement("script");
-      appScript.src = "app.js?v=20260723-1";
+      appScript.src = `app.js?v=${Date.now()}`;
       document.body.appendChild(appScript);
     };
     document.body.appendChild(recommendationScript);
