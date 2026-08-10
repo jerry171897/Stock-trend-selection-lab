@@ -409,8 +409,17 @@
   });
 
   const visibleTrackingStatuses = new Set(["active", "target_reached", "stop_triggered", "model_expired", "policy_disqualified"]);
+  const trackingMinimumTargetUpsidePct = Number(bundle.minimum_target_upside_pct || 0);
   const trackingRows = Array.isArray(bundle.tracking)
-    ? bundle.tracking.filter(row => visibleTrackingStatuses.has(row.status))
+    ? bundle.tracking.filter(row => {
+        const openedPrice = Number(row.opened_price);
+        const originalTarget = Number(row.original_target);
+        const targetUpsidePct = openedPrice > 0
+          ? (originalTarget / openedPrice - 1) * 100
+          : -Infinity;
+        return visibleTrackingStatuses.has(row.status)
+          && targetUpsidePct >= trackingMinimumTargetUpsidePct - 1e-9;
+      })
     : [];
   const trackingBody = document.querySelector("#tracking-body");
   const trackingSearch = document.querySelector("#tracking-search");
@@ -523,7 +532,6 @@
   const targetReached = closedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
   const modelExpired = closedTracking.filter(row => row.status === "model_expired");
-  const policyDisqualified = closedTracking.filter(row => row.status === "policy_disqualified");
   const outcomeTracking = closedTracking.filter(row =>
     row.status === "target_reached" || row.status === "stop_triggered"
   );
@@ -547,7 +555,6 @@
   setTrackingStat("stop-count", `${stopTriggered.length} 輪`);
   setTrackingStat("expired-rate", closedRate(modelExpired.length));
   setTrackingStat("expired-count", `${modelExpired.length} 輪`);
-  setTrackingStat("disqualified-count", `${policyDisqualified.length} 輪`);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));
   const activeTracking = trackingRows.filter(row => !row.closed_date).length;
