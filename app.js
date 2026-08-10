@@ -425,6 +425,7 @@
     "股票", "原始推薦", "最新價格", "原始停利",
     "原始停損", "追蹤日數", "目前狀態"
   ];
+  trackingLabels.splice(5, 0, "結案日期／價格");
   const trackingPageSize = 10;
   let currentTrackingPage = 1;
   const statusLabels = {
@@ -469,6 +470,7 @@
         number(track.latest_price),
         number(track.original_target),
         number(track.original_stop),
+        track.closed_date ? `${track.closed_date}／${number(track.latest_price)}` : "—",
         `${track.trading_days || 0}`,
         statusLabels[track.status] || track.status || "—"
       ];
