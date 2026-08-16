@@ -295,7 +295,7 @@ footer p,.footer-meta { color:#92a4a3; font-size:12px; }
   .method-toggle { gap:7px; }
   .method-toggle b { width:30px; height:30px; }
 }
-/* Local-only institutional_v4_20d identity banner. */
+/* Blue-site identity banner. */
 .local-model-banner {
   position: sticky;
   top: 0;
@@ -324,7 +324,7 @@ footer p,.footer-meta { color:#92a4a3; font-size:12px; }
   }
 }
 
-/* institutional_v4_20d local identity: blue research palette. */
+/* Blue-site research palette. */
 :root {
   --ink: #102544;
   --muted: #62738d;
