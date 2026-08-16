@@ -311,46 +311,6 @@ footer p,.footer-meta { color:#92a4a3; font-size:12px; }
   letter-spacing: .02em;
 }
 
-.model-difference {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 0.8rem clamp(1rem, 4vw, 3rem);
-  color: #dbeafe;
-  background: #0f2f5f;
-  border-bottom: 1px solid rgba(147, 197, 253, 0.32);
-  font-size: 0.88rem;
-}
-
-.model-difference > strong {
-  flex: 0 0 auto;
-  color: #fff;
-}
-
-.model-difference div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem 1.25rem;
-}
-
-.model-difference b {
-  color: #93c5fd;
-}
-
-@media (max-width: 760px) {
-  .model-difference {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .model-difference div {
-    flex-direction: column;
-  }
-}
-
 .local-model-banner strong {
   color: #fff;
 }
