@@ -396,6 +396,52 @@
         focusPanel.querySelector(".focus-sources").appendChild(link);
       });
     }
+    const official = bundle.official_updates?.companies?.[String(stock.stock_id)];
+    if (official?.display === true) {
+      const panel = document.createElement("section");
+      panel.className = "official-updates";
+      const heading = document.createElement("h4");
+      heading.textContent = "最新官方資訊";
+      panel.appendChild(heading);
+      const items = document.createElement("ul");
+      const appendOfficialItem = (item, sourceLabel) => {
+        const rawTitle = String(item.title || "官方公告").trim();
+        const dateMatch = rawTitle.match(/(20\d{2})[\/-](\d{2})[\/-](\d{2})/);
+        const displayDate = item.date || (dateMatch
+          ? `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`
+          : "日期未標示");
+        const displayTitle = rawTitle
+          .replace(/^\s*20\d{2}[\/-]\d{2}[\/-]\d{2}\s*/, "")
+          .trim() || "官方公告";
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        const source = document.createElement("span");
+        source.className = "official-update-source";
+        source.textContent = sourceLabel;
+        const title = document.createElement("strong");
+        title.textContent = displayTitle;
+        const date = document.createElement("time");
+        date.textContent = displayDate;
+        link.append(source, title, date);
+        li.appendChild(link);
+        items.appendChild(li);
+      };
+      (official.disclosures || []).slice(0, 3).forEach(item => {
+        appendOfficialItem(item, "公開資訊");
+      });
+      (official.official_site?.links || []).slice(0, 3).forEach(item => {
+        appendOfficialItem(item, "公司官網");
+      });
+      panel.appendChild(items);
+      const meta = document.createElement("p");
+      meta.className = "official-updates-meta";
+      meta.textContent = `資料截至 ${official.as_of_date || bundle.official_updates.updated_at || "—"}；僅整理官方揭露，不含媒體消息。`;
+      panel.appendChild(meta);
+      card.querySelector(".stock-detail").appendChild(panel);
+    }
     card.querySelector(".formula").textContent =
       `推薦分數＝趨勢 45%＋上漲機率分數 25%＋反向下跌風險 20%＋信心 10%；上漲機率分數是模型指標，不代表實際機率；資料日 ${stock.screening_date || bundle.as_of_date}`;
 
