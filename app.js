@@ -378,6 +378,10 @@
     });
     const focus = bundle.company_focus?.companies?.[String(stock.stock_id)];
     if (focus?.highlights?.length) {
+      const focusBadge = document.createElement("span");
+      focusBadge.className = "focus-badge";
+      focusBadge.textContent = "近期發展已更新";
+      card.querySelector(".stock-identity").appendChild(focusBadge);
       const focusPanel = card.querySelector(".company-focus");
       focusPanel.hidden = false;
       focus.highlights.forEach(text => {
