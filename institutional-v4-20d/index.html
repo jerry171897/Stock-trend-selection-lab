@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="模型前向驗證中的 AI 台股篩選與實驗性推薦研究清單">
+  <title>AI 趨勢選股研究室</title>
+  <link rel="stylesheet" href="styles.css?v=20260723-1">
+</head>
+<body>
+  <div class="local-model-banner">
+    <strong>institutional_v4_20d</strong>
+    <span>藍色實驗網站｜75 分以上才發布｜自 2026-08-14 起正式追蹤｜不影響 baseline_a 綠色正式網站</span>
+  </div>
+  <section class="model-difference" aria-label="藍色與綠色網站差異">
+    <strong>與綠色網站的差別</strong>
+    <div>
+      <span><b>綠色網站</b>：baseline_a 正式模型與既有正式追蹤紀錄</span>
+      <span><b>藍色網站</b>：institutional_v4_20d 實驗模型，推薦分數至少 75 分，追蹤自 2026-08-14 起重新計算</span>
+    </div>
+  </section>
+  <header class="site-header">
+    <a class="brand" href="#top">
+      <span class="brand-mark">選</span>
+      <span><strong>AI 趨勢選股</strong><small>AI Trend Selection Lab</small></span>
+    </a>
+    <nav>
+      <a href="#recommendations">推薦清單</a>
+      <a href="#tracking">推薦後追蹤</a>
+      <a href="#industries">產業分布</a>
+      <a href="#method">使用說明</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="validation-badge"><span></span>模型前向驗證進行中</div>
+        <p class="eyebrow">AI-ASSISTED TAIWAN EQUITY RESEARCH · <span data-as-of>載入中</span></p>
+        <h1>用 AI 輔助篩選趨勢，<br>也看懂每一檔入選理由。</h1>
+        <div class="hero-actions">
+          <a class="button primary" href="#recommendations">查看推薦清單</a>
+          <a class="button secondary" href="#method">了解使用方式</a>
+        </div>
+      </div>
+      <aside class="signal-panel">
+        <p>本期 AI 篩選推薦</p>
+        <strong data-count>—</strong><span>檔</span>
+        <dl>
+          <div><dt>資料日期</dt><dd data-as-of>—</dd></div>
+          <div><dt>更新時間</dt><dd data-generated>—</dd></div>
+          <div><dt>資料狀態</dt><dd class="status-dot" data-status>載入中</dd></div>
+          <div><dt>合格門檻</dt><dd>風險 ≤35／分數 ≥65</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="notice">
+      <strong>實驗性推薦</strong>
+      <p>本頁使用規則與 AI 模型輔助篩選台股。目前模型仍在市場前向驗證階段，推薦、分數、目標價與追蹤結果都屬實驗性研究資料，不代表模型已驗證有效，也不構成買賣邀約、投資建議或獲利保證。</p>
+    </section>
+
+    <section class="section method">
+      <details class="method-disclosure" id="method">
+        <summary>
+          <div>
+            <p class="eyebrow">HOW TO READ</p>
+            <div class="method-title-row">
+              <h2>使用說明</h2>
+              <span class="method-toggle"><span>點擊查看</span><b aria-hidden="true">＋</b></span>
+            </div>
+          </div>
+        </summary>
+        <p class="method-intro">先看當日推薦，再用推薦後追蹤查看之後更新的參考目標與狀態。</p>
+        <ol class="method-steps">
+          <li><span>01</span><div><h3>最新推薦</h3><p>風險不高於 35、分數不低於 65 才顯示；最多 10 檔且不補足。</p></div></li>
+          <li><span>02</span><div><h3>個股詳情</h3><p>展開可查看價格、主要模型分數、日 K 圖、公司資訊與近期發展重點。</p></div></li>
+          <li><span>03</span><div><h3>推薦後追蹤</h3><p>每輪固定保存推薦當時的原始停利與停損價格，只記錄是否觸及；未觸及就持續觀察。</p></div></li>
+          <li><span>04</span><div><h3>大量資料操作</h3><p>可搜尋股票、切換追蹤中或已結案、篩選狀態、排序並以每頁 10 筆瀏覽。</p></div></li>
+          <li><span>05</span><div><h3>研究用途</h3><p>分數與目標皆為模型參考；系統不管理實際持股、不配置固定本金，也不執行交易。</p></div></li>
+          <li><span>06</span><div><h3>驗證狀態</h3><p>模型仍在收集未知未來市場資料；樣本成熟並通過預先設定門檻前，所有推薦均屬實驗性質。</p></div></li>
+        </ol>
+      </details>
+    </section>
+
+    <section class="section" id="recommendations">
+      <div class="section-heading">
+        <div><p class="eyebrow">CURRENT RECOMMENDATIONS</p><h2>最新推薦清單</h2></div>
+        <p id="load-message">正在載入符合門檻的推薦資料；展開個股可查看完整內部分數。</p>
+      </div>
+      <div class="stock-grid" id="stock-grid"></div>
+    </section>
+
+    <section class="section tracking-section" id="tracking">
+      <div class="section-heading">
+        <div><p class="eyebrow">POST-RECOMMENDATION TRACKING</p><h2>推薦後追蹤</h2></div>
+        <p id="tracking-message">保留原始推薦條件，並依最新模型資料更新參考目標與狀態。</p>
+      </div>
+      <div class="tracking-policy">
+        <span>未觸及原始停利／停損就持續追蹤</span>
+        <span>目標變動至少 3% 才記錄事件</span>
+        <span>只在觸及原始停利／停損時結案</span>
+      </div>
+      <div class="tracking-controls">
+        <label class="tracking-search">
+          <span>搜尋股票</span>
+          <input id="tracking-search" type="search" placeholder="輸入名稱或代號">
+        </label>
+        <label>
+          <span>追蹤狀態</span>
+          <select id="tracking-lifecycle">
+            <option value="active">追蹤中</option>
+            <option value="closed">已結案</option>
+            <option value="all">全部</option>
+          </select>
+        </label>
+        <label>
+          <span>狀態篩選</span>
+          <select id="tracking-status">
+            <option value="all">全部狀態</option>
+            <option value="active">持續追蹤</option>
+            <option value="target_reached">已達原始目標</option>
+            <option value="stop_triggered">已跌破原始停損</option>
+            <option value="model_expired">模型預測失效</option>
+          </select>
+        </label>
+        <label>
+          <span>排序方式</span>
+          <select id="tracking-sort">
+            <option value="opened_desc">推薦日期：新到舊</option>
+            <option value="days_desc">追蹤日數：多到少</option>
+          </select>
+        </label>
+      </div>
+      <div class="tracking-table-wrap">
+        <table class="tracking-table">
+          <thead><tr>
+            <th>股票</th><th>原始推薦</th><th>追蹤價格</th><th>原始停利</th>
+            <th>原始停損</th><th>結案日期／價格</th><th>追蹤日數</th><th>目前狀態</th>
+          </tr></thead>
+          <tbody id="tracking-body"></tbody>
+        </table>
+      </div>
+      <div class="tracking-pagination">
+        <span id="tracking-range">—</span>
+        <div>
+          <button id="tracking-prev" type="button">上一頁</button>
+          <span id="tracking-page">—</span>
+          <button id="tracking-next" type="button">下一頁</button>
+        </div>
+      </div>
+      <section class="tracking-statistics" aria-labelledby="tracking-statistics-title">
+        <div class="tracking-statistics-heading">
+          <div>
+            <p class="eyebrow">TARGET / STOP OUTCOMES</p>
+            <h3 id="tracking-statistics-title">原始停利與停損追蹤統計</h3>
+          </div>
+          <p>達標率與停損率只計入停利／停損結案；政策調整與模型失效另列。</p>
+        </div>
+        <div class="tracking-stat-grid">
+          <article class="tracking-stat-card neutral"><span>已結束樣本</span><strong data-tracking-stat="closed">0</strong><small>輪次</small></article>
+          <article class="tracking-stat-card success"><span>達到原始目標</span><strong data-tracking-stat="target-rate">—</strong><small data-tracking-stat="target-count">0 輪</small></article>
+          <article class="tracking-stat-card danger"><span>觸及原始停損</span><strong data-tracking-stat="stop-rate">—</strong><small data-tracking-stat="stop-count">0 輪</small></article>
+          <article class="tracking-stat-card warning"><span>模型預測失效</span><strong data-tracking-stat="expired-rate">—</strong><small data-tracking-stat="expired-count">0 輪</small></article>
+          <article class="tracking-stat-card active"><span>持續追蹤</span><strong data-tracking-stat="active">0</strong><small>輪次</small></article>
+          <article class="tracking-stat-card success"><span>平均達標時間</span><strong data-tracking-stat="average-days">—</strong><small>交易日</small></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="section industry-section" id="industries">
+      <div class="section-heading">
+        <div><p class="eyebrow">INDUSTRY DISTRIBUTION</p><h2>推薦產業分布</h2></div>
+        <p>依本期入選數量及平均推薦分數整理，不限制題材集中。</p>
+      </div>
+      <div class="industry-list" id="industry-list"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div><strong>AI 趨勢選股 AI Trend Selection Lab</strong><p>以規則與 AI 模型輔助篩選；資料來源包含 TWSE、TPEx、MOPS 與研究資料庫。</p></div>
+    <div class="footer-meta"><span>最後產生：<span data-generated>—</span></span><span>模型驗證中 · 實驗性推薦 · 非投資建議</span></div>
+  </footer>
+
+  <template id="stock-template">
+    <article class="stock-card">
+      <button class="stock-summary" type="button" aria-expanded="false">
+        <span class="rank"></span>
+        <span class="stock-identity"><small class="industry"></small><strong class="name"></strong><span class="code"></span></span>
+        <span class="score-block"><small>推薦分數</small><strong class="score"></strong></span>
+        <span class="toggle" aria-hidden="true">＋</span>
+      </button>
+      <div class="stock-detail">
+        <div class="detail-stats"></div>
+        <div class="chart-grid">
+          <figure class="chart-card price-chart">
+            <figcaption><span>日K、成交量與投信</span><small>紅漲綠跌 · 共用時間軸</small></figcaption>
+            <div class="chart-toolbar">
+              <div class="ma-switch" aria-label="均線顯示">
+                <label class="ma5"><input type="checkbox" value="5" checked>MA5</label>
+                <label class="ma10"><input type="checkbox" value="10" checked>MA10</label>
+                <label class="ma20"><input type="checkbox" value="20" checked>MA20</label>
+              </div>
+            </div>
+            <div class="chart-host"></div>
+          </figure>
+          <figure class="chart-card score-chart"><figcaption><span>模型主要分數</span><small>下跌風險：低綠／中橘／高紅</small></figcaption><div class="chart-host"></div></figure>
+        </div>
+        <div class="reason-columns">
+          <div class="selection-details">
+            <h4>入選依據</h4>
+            <ul class="positive-list"></ul>
+            <section class="company-focus" hidden>
+              <h5>近期發展重點</h5>
+              <ul></ul>
+              <div class="focus-meta"></div>
+              <div class="focus-sources"></div>
+            </section>
+          </div>
+          <aside class="company-profile">
+            <h4>公司基本資訊</h4>
+            <dl></dl>
+          </aside>
+        </div>
+        <p class="formula"></p>
+      </div>
+    </article>
+  </template>
+  <script>
+    // The recommendation bundle is regenerated before each launch. Give it a
+    // unique URL so an already-open browser cannot reuse an older cached copy.
+    const recommendationScript = document.createElement("script");
+    recommendationScript.src = `recommendations-data.js?v=${Date.now()}`;
+    recommendationScript.onload = () => {
+      const appScript = document.createElement("script");
+      appScript.src = `app.js?v=${Date.now()}`;
+      document.body.appendChild(appScript);
+    };
+    document.body.appendChild(recommendationScript);
+  </script>
+</body>
+</html>
