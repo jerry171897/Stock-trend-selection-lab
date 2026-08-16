@@ -295,14 +295,3 @@ footer p,.footer-meta { color:#92a4a3; font-size:12px; }
   .method-toggle { gap:7px; }
   .method-toggle b { width:30px; height:30px; }
 }
-.official-updates {
-  margin-top: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(15, 118, 110, 0.22);
-  border-radius: 14px;
-  background: rgba(240, 253, 250, 0.72);
-}
-.official-updates h4 { margin: 0 0 10px; font-size: 1rem; }
-.official-updates ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
-.official-updates a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-.official-updates-meta { margin: 12px 0 0; color: var(--muted); font-size: 0.82rem; }
