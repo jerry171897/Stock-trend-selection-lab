@@ -100,7 +100,6 @@ h1 { font-family: "Noto Serif TC", "PMingLiU", serif; font-size:clamp(42px, 6vw,
 .stock-identity small { display:block; color:var(--teal); font-size:12px; }
 .stock-identity strong { font-size:23px; margin-right:8px; }
 .stock-identity .code { color:var(--muted); font-size:13px; }
-.focus-badge { display:inline-flex; align-items:center; margin-left:9px; padding:3px 8px; border:1px solid rgba(18,122,111,.28); border-radius:999px; background:rgba(18,122,111,.08); color:var(--teal); font-size:11px; font-weight:700; vertical-align:middle; }
 .score-block { text-align:right; }
 .score-block small { display:block; color:var(--muted); font-size:11px; }
 .score-block strong { font:700 27px serif; }
