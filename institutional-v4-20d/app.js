@@ -479,6 +479,7 @@
     model_expired: "模型預測失效",
     policy_disqualified: "不符合新規格"
   };
+  const isClosedTrack = track => track.status !== "active";
   function filteredTrackingRows() {
     const keyword = trackingSearch.value.trim().toLowerCase();
     const lifecycle = trackingLifecycle.value;
@@ -486,8 +487,8 @@
     const filtered = trackingRows.filter(track => {
       const searchable = `${track.stock_name || ""} ${track.stock_id || ""}`.toLowerCase();
       const lifecycleMatch = lifecycle === "all"
-        || (lifecycle === "active" && !track.closed_date)
-        || (lifecycle === "closed" && Boolean(track.closed_date));
+        || (lifecycle === "active" && !isClosedTrack(track))
+        || (lifecycle === "closed" && isClosedTrack(track));
       return (!keyword || searchable.includes(keyword))
         && lifecycleMatch
         && (status === "all" || track.status === status);
@@ -563,7 +564,7 @@
     renderTrackingTable();
   });
   renderTrackingTable();
-  const closedTracking = trackingRows.filter(row => Boolean(row.closed_date));
+  const closedTracking = trackingRows.filter(isClosedTrack);
   const targetReached = closedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
   const modelExpired = closedTracking.filter(row => row.status === "model_expired");
@@ -592,7 +593,7 @@
   setTrackingStat("expired-count", `${modelExpired.length} 輪`);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));
-  const activeTracking = trackingRows.filter(row => !row.closed_date).length;
+  const activeTracking = trackingRows.filter(row => !isClosedTrack(row)).length;
   document.querySelector("#tracking-message").textContent = trackingRows.length
     ? `目前追蹤中 ${activeTracking} 檔；表內同時保留最近結案紀錄，原始目標不會被後續更新覆蓋。`
     : "目前尚無推薦後追蹤資料；下一次每日流程會自動建立。";
