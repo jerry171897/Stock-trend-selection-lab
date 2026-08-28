@@ -229,7 +229,17 @@
     recommendationScript.onload = () => {
       const appScript = document.createElement("script");
       appScript.src = `app.js?v=${Date.now()}`;
+      appScript.onerror = () => {
+        document.querySelector("#load-message").textContent =
+          "頁面程式載入失敗，請重新整理；若仍失敗，請重新執行藍色網站啟動檔。";
+        document.querySelectorAll("[data-status]").forEach(el => el.textContent = "載入失敗");
+      };
       document.body.appendChild(appScript);
+    };
+    recommendationScript.onerror = () => {
+      document.querySelector("#load-message").textContent =
+        "推薦資料載入失敗，請重新執行藍色網站啟動檔。";
+      document.querySelectorAll("[data-status]").forEach(el => el.textContent = "無法載入資料");
     };
     document.body.appendChild(recommendationScript);
   </script>

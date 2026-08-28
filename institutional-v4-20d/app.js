@@ -429,7 +429,7 @@
       meta.className = "official-updates-meta";
       meta.textContent = `資料截至 ${official.as_of_date || bundle.official_updates.updated_at || "—"}；僅整理官方揭露，不含媒體消息。`;
       panel.appendChild(meta);
-      card.querySelector(".stock-details").appendChild(panel);
+      card.querySelector(".stock-detail").appendChild(panel);
     }
     card.querySelector(".formula").textContent =
       `推薦分數＝趨勢 45%＋上漲機率分數 25%＋反向下跌風險 20%＋信心 10%；上漲機率分數是模型指標，不代表實際機率；資料日 ${stock.screening_date || bundle.as_of_date}`;
