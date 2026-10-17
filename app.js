@@ -579,15 +579,22 @@
   const targetReached = statisticalClosedTracking.filter(row => row.status === "target_reached");
   const stopTriggered = statisticalClosedTracking.filter(row => row.status === "stop_triggered");
   const modelExpired = statisticalClosedTracking.filter(row => row.status === "model_expired");
-  const outcomeTracking = statisticalClosedTracking.filter(row =>
-    row.status === "target_reached" || row.status === "stop_triggered"
-  );
-  const trackingRate = count => outcomeTracking.length
-    ? `${(count / outcomeTracking.length * 100).toFixed(1)}%`
-    : "—";
-  const closedRate = count => statisticalClosedTracking.length
-    ? `${(count / statisticalClosedTracking.length * 100).toFixed(1)}%`
-    : "—";
+  const outcomeRates = statisticalClosedTracking.length
+    ? (() => {
+        const denominator = statisticalClosedTracking.length;
+        const counts = [targetReached.length, stopTriggered.length, modelExpired.length];
+        const rawRates = counts.map(count => count / denominator * 100);
+        const displayRates = rawRates.map(rate => Number(rate.toFixed(1)));
+        if (counts.reduce((sum, count) => sum + count, 0) === denominator) {
+          displayRates[2] = Number((displayRates[2] + 100 - displayRates.reduce((sum, rate) => sum + rate, 0)).toFixed(1));
+        }
+        return {
+          target: `${displayRates[0]}%`,
+          stop: `${displayRates[1]}%`,
+          expired: `${displayRates[2]}%`
+        };
+      })()
+    : { target: "—", stop: "—", expired: "—" };
   const setTrackingStat = (name, value) => {
     const element = document.querySelector(`[data-tracking-stat="${name}"]`);
     if (element) element.textContent = value;
@@ -596,11 +603,11 @@
     ? targetReached.reduce((sum, row) => sum + Number(row.trading_days || 0), 0) / targetReached.length
     : null;
   setTrackingStat("closed", statisticalClosedTracking.length);
-  setTrackingStat("target-rate", trackingRate(targetReached.length));
+  setTrackingStat("target-rate", outcomeRates.target);
   setTrackingStat("target-count", `${targetReached.length} 輪`);
-  setTrackingStat("stop-rate", trackingRate(stopTriggered.length));
+  setTrackingStat("stop-rate", outcomeRates.stop);
   setTrackingStat("stop-count", `${stopTriggered.length} 輪`);
-  setTrackingStat("expired-rate", closedRate(modelExpired.length));
+  setTrackingStat("expired-rate", outcomeRates.expired);
   setTrackingStat("expired-count", `${modelExpired.length} 輪`);
   setTrackingStat("active", trackingRows.length - closedTracking.length);
   setTrackingStat("average-days", averageTargetDays === null ? "—" : averageTargetDays.toFixed(1));

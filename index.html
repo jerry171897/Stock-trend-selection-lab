@@ -112,6 +112,7 @@
             <option value="target_reached">已達原始目標</option>
             <option value="stop_triggered">已跌破原始停損</option>
             <option value="model_expired">模型預測失效</option>
+            <option value="policy_disqualified">政策淘汰</option>
           </select>
         </label>
         <label>
@@ -145,10 +146,10 @@
             <p class="eyebrow">TARGET / STOP OUTCOMES</p>
             <h3 id="tracking-statistics-title">原始停利與停損追蹤統計</h3>
           </div>
-          <p>統計排除政策淘汰；達標、停損與模型失效均以有效結案紀錄為分母。</p>
+          <p>統計排除 policy_disqualified（政策淘汰）；達標、停損與模型失效均以有效結案紀錄（已結案且排除政策淘汰）為分母。</p>
         </div>
         <div class="tracking-stat-grid">
-          <article class="tracking-stat-card neutral"><span>已結束樣本</span><strong data-tracking-stat="closed">0</strong><small>輪次</small></article>
+          <article class="tracking-stat-card neutral"><span>有效結案筆數</span><strong data-tracking-stat="closed">0</strong><small>已結案且排除政策淘汰</small></article>
           <article class="tracking-stat-card success"><span>達到原始目標</span><strong data-tracking-stat="target-rate">—</strong><small data-tracking-stat="target-count">0 輪</small></article>
           <article class="tracking-stat-card danger"><span>觸及原始停損</span><strong data-tracking-stat="stop-rate">—</strong><small data-tracking-stat="stop-count">0 輪</small></article>
           <article class="tracking-stat-card warning"><span>模型預測失效</span><strong data-tracking-stat="expired-rate">—</strong><small data-tracking-stat="expired-count">0 輪</small></article>
