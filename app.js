@@ -575,17 +575,18 @@
   });
   renderTrackingTable();
   const closedTracking = trackingRows.filter(row => Boolean(row.closed_date));
-  const targetReached = closedTracking.filter(row => row.status === "target_reached");
-  const stopTriggered = closedTracking.filter(row => row.status === "stop_triggered");
-  const modelExpired = closedTracking.filter(row => row.status === "model_expired");
-  const outcomeTracking = closedTracking.filter(row =>
+  const statisticalClosedTracking = closedTracking.filter(row => row.status !== "policy_disqualified");
+  const targetReached = statisticalClosedTracking.filter(row => row.status === "target_reached");
+  const stopTriggered = statisticalClosedTracking.filter(row => row.status === "stop_triggered");
+  const modelExpired = statisticalClosedTracking.filter(row => row.status === "model_expired");
+  const outcomeTracking = statisticalClosedTracking.filter(row =>
     row.status === "target_reached" || row.status === "stop_triggered"
   );
   const trackingRate = count => outcomeTracking.length
     ? `${(count / outcomeTracking.length * 100).toFixed(1)}%`
     : "—";
-  const closedRate = count => closedTracking.length
-    ? `${(count / closedTracking.length * 100).toFixed(1)}%`
+  const closedRate = count => statisticalClosedTracking.length
+    ? `${(count / statisticalClosedTracking.length * 100).toFixed(1)}%`
     : "—";
   const setTrackingStat = (name, value) => {
     const element = document.querySelector(`[data-tracking-stat="${name}"]`);
@@ -594,7 +595,7 @@
   const averageTargetDays = targetReached.length
     ? targetReached.reduce((sum, row) => sum + Number(row.trading_days || 0), 0) / targetReached.length
     : null;
-  setTrackingStat("closed", closedTracking.length);
+  setTrackingStat("closed", statisticalClosedTracking.length);
   setTrackingStat("target-rate", trackingRate(targetReached.length));
   setTrackingStat("target-count", `${targetReached.length} 輪`);
   setTrackingStat("stop-rate", trackingRate(stopTriggered.length));
